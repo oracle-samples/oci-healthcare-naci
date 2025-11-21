@@ -1,0 +1,6 @@
+/.terraform
+/.terraform.lock.hcl
+/.idea
+/terraform.tfstate
+/privateKey
+/terraform.tfstate.backup

@@ -1,0 +1,111 @@
+title: "Deploy Landing Zone VCN and Subnets and an OKE Cluster with ArgoCD and Prometheus"
+description: "Deploy Landing Zone VCN and Subnets and an OKE Cluster with ArgoCD and Prometheus"
+schemaVersion: 1.0.0
+
+variableGroups:
+    - title: "Hidden"
+      visible: false
+      variables:
+        - tenancy_ocid
+        - region
+        # - clusters_configuration
+        # - workers_configuration
+    - title: "Provider and Target Compartment"
+      variables:
+        - network_compartment_id
+    - title: "Target Compartment"
+      variables:
+        - compartment_id
+    - title: "VCN Configuration"
+      variables:
+        - vcn_name
+        - vcn_cidrs
+    - title: "Subnet Configuration"
+      variables:
+        - api_subnet_name
+        - api_subnet_cidr
+        - workers_subnet_name
+        - workers_subnet_cidr
+        - pods_subnet_name
+        - pods_subnet_cidr
+        - services_subnet_name
+        - services_subnet_cidr
+        - mgmt_subnet_name
+        - mgmt_subnet_cidr
+    - title: "OKE Cluster Configuration"
+      variables:
+        - ssh_public_key
+
+variables:
+  tenancy_ocid:
+    type: oci:identity:tenancy:id
+    title: "Tenancy OCID"
+    description: "Your tenancy's OCID. This will be automatically populated."
+    required: true
+  region:
+    type: oci:identity:region:name
+    title: "Deployment Region"
+    description: "The OCI region where the network will be created."
+    required: true
+  compartment_id:
+    type: oci:identity:compartment:id
+    title: "Compartment"
+    description: "The compartment where all network resources will be created."
+    required: true
+
+  vcn_name:
+    type: string
+    title: "VCN Name"
+    default: "vcn-oke"
+  vcn_cidrs:
+    type: list(string)
+    title: "VCN CIDR Block"
+    description: "Must be a valid JSON array, e.g., [\"10.0.0.0/16\"]"
+    default: "[\"10.0.0.0/16\"]"
+
+  api_subnet_name:
+    type: string
+    title: "API Subnet Name"
+    default: "apisub"
+  api_subnet_cidr:
+    type: string
+    title: "API Subnet CIDR"
+    default: "10.0.0.0/30"
+  workers_subnet_name:
+    type: string
+    title: "Workers Subnet Name"
+    default: "workerssub"
+  workers_subnet_cidr:
+    type: string
+    title: "Workers Subnet CIDR"
+    default: "10.0.1.0/24"
+  services_subnet_name:
+    type: string
+    title: "Services Subnet Name"
+    default: "sub-services"
+  services_subnet_cidr:
+    type: string
+    title: "Services Subnet CIDR"
+    default: "10.0.2.0/24"
+  pods_subnet_name:
+    type: string
+    title: "Pods Subnet Name"
+    default: "podssub"
+  pods_subnet_cidr:
+    type: string
+    title: "Pods Subnet CIDR"
+    default: "10.0.32.0/19"
+  mgmt_subnet_name:
+    type: string
+    title: "Management Subnet Name"
+    default: "mgmt-subnet"
+  mgmt_subnet_cidr:
+    type: string
+    title: "Management Subnet CIDR"
+    default: "10.0.3.0/28"
+  ssh_public_key:
+    type: string
+    title: "SSH Public Key"
+    description: "The SSH public key to access the OKE worker nodes."
+    default: ""
+    required: true
