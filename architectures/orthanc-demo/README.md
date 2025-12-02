@@ -25,7 +25,7 @@ allow dynamic-group <dynamic_group_name> to manage object-family in compartment 
 ```
 docker pull orthancteam/orthanc
 ``` 
-* Retrieve the orthanc.json file enclosed in the repo and modify as needed.
+* Retrieve the `orthanc.json` file enclosed in the repo and modify as needed.
 
 * Create and start container
 ```
