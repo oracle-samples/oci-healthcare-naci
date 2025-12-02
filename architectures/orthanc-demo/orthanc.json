@@ -1,0 +1,31 @@
+{
+  "Name": "Demo",
+  "HttpPort": 8042,
+  "DicomAet": "ARCHIVE",
+  "DicomPort": 104,
+  "AuthenticationEnabled": false,
+  "DicomWeb": {
+    "Enable": true
+  },
+  "AwsS3Storage": {
+    "BucketName": "<object_storage_bucket_name>",
+    "Region": "us-ashburn-1",
+    "AccessKey": "<bucket_access_key>",
+    "SecretKey": "<bucket_secret_key>",
+    "Endpoint": "https://<namespace>.compat.objectstorage.us-ashburn-1.oraclecloud.com",
+    "VirtualAddressing": false
+  },
+  "PostgreSQL": {
+    "EnableIndex": true,
+    "EnableStorage": false,
+    "Lock": false,
+    "ConnectionUri": "postgresql://<db_user>:<db_password>@<db_endpoint>:5432/<db_name>?sslmode=prefer"
+  },
+  "Plugins": [
+    "/usr/share/orthanc/plugins/libOrthancAwsS3Storage.so",
+    "/usr/share/orthanc/plugins/libOrthancPostgreSQLIndex.so",
+    "/usr/share/orthanc/plugins/libOrthancExplorer2.so",
+    "/usr/share/orthanc/plugins/libOrthancGdcm.so",
+    "/usr/share/orthanc/plugins/libOrthancDicomWeb.so"
+  ]
+}
