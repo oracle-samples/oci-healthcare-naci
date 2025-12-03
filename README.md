@@ -25,6 +25,10 @@ This repository provides production-ready reference architectures, automation, a
 
 * NACIE Healthcare and Life Sciences Engineering Team (Email:@oracle.com)
 
+## Contributing
+
+This project welcomes contributions from the community. Before submitting a pull request, please [review our contribution guide](./CONTRIBUTING.md)
+
 ## Security
 
 Please consult the [security guide](./SECURITY.md) for our responsible security vulnerability disclosure process
