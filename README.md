@@ -1,6 +1,14 @@
-# HCLS NACIE Architectures
+# OCI Healthcare and Life Sciences (HCLS) Engineering Repository
 
-* This Project is a collection of reference architectures for building Healthcare and Life Sciences built on Oracle's OCI.
+This repository provides production-ready reference architectures, automation, and sample implementations to accelerate secure, compliant solutions on Oracle Cloud Infrastructure (OCI) for healthcare and life sciences workloads. It is designed to help teams build HIPAA- and HITRUST-aligned foundations, modern data platforms, and MLOps-enabled applications with repeatable, infrastructure-as-code patterns.
+
+**What you’ll find**
+
+* Reference architectures: Clinically oriented data ingestion, analytics, and interoperability patterns (e.g., FHIR-enabled APIs, Object Storage and Autonomous Database, and more).
+* Automation: Terraform modules and example stacks for VCN/compartments, IAM, Vault, WAF/NSGs, API Gateway, OKE, Container Registry, Observability, and cost governance.
+* Application blueprints: Secure microservices on OKE/Functions, event-driven integration, and sample pipelines for CI/CD and DevSecOps with policy-as-code guardrails.
+* MLOps patterns: Portable workflows for model training/serving on OCI (e.g., Data Science, Data Flow, OKE), with guidance for data lineage, monitoring, and model governance.
+
 
 ## Installation
 
