@@ -31,12 +31,7 @@ Please consult the [security guide](./SECURITY.md) for our responsible security 
 
 ## License
 
-[UPL](./LICENSE)
 Copyright (c) 2026 year Oracle and/or its affiliates.
 
-
-
-*Replace this statement if your project is not licensed under the UPL*
-
 Released under the Universal Permissive License v1.0 as shown at
-<https://oss.oracle.com/licenses/upl/>.
+<https://oss.oracle.com/licenses/upl/>. [UPL](./LICENSE)
