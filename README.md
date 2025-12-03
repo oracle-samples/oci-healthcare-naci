@@ -10,7 +10,7 @@ This repository provides production-ready reference architectures, automation, a
 * MLOps patterns: Portable workflows for model training/serving on OCI (e.g., Data Science, Data Flow, OKE), with guidance for data lineage, monitoring, and model governance.
 
 
-## Prerequisties
+## Prerequisites
 
 * Have an OCI Tenancy. Need a OCI Tenancy? Sign up for a free Oracle Cloud Tenant at https://signup.oraclecloud.com/
 * After logging into a OCI tenancy for the first time, it is best practice to create a user for development. Get familiar with OCI IAM: https://docs.oracle.com/en-us/iaas/Content/Identity/users/create-user-accounts.htm
