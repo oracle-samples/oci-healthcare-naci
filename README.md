@@ -10,13 +10,16 @@ This repository provides production-ready reference architectures, automation, a
 * MLOps patterns: Portable workflows for model training/serving on OCI (e.g., Data Science, Data Flow, OKE), with guidance for data lineage, monitoring, and model governance.
 
 
-## Installation
+## Prerequisties
 
-* See Reference architectures individual README for installations in the architectures folder.
+* Have an OCI Tenancy. Need a OCI Tenancy? Sign up for a free Oracle Cloud Tenant at https://signup.oraclecloud.com/
+* After logging into a OCI tenancy for the first time, it is best practice to create a user for development. Get familiar with OCI IAM: https://docs.oracle.com/en-us/iaas/Content/Identity/users/create-user-accounts.htm
+* Generate SSH keys for your new user: https://docs.oracle.com/en/learn/generate_ssh_keys/index.html
 
 ## Reference Architectures
 
 * Mirth Connect on OCI VMs: [architectures/mirth-demo](./architectures/mirth-demo)
+* Orthanic Demo on OCI: [architectures/orthanc-demo](./architectures/orthanc-demo)
 
 ## Help and Maintainers
 
