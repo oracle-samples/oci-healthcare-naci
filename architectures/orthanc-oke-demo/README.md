@@ -8,6 +8,7 @@ The Terraform sample creates the following OCI infrastructure resources:
 * OCI Database with PostgreSQL
 * Object Storage bucket
 * IAM policies
+* Virtual machine used for testing and debugging purpose only.
 
 Orthanc is deployed to the OKE cluster through the supplied Helm chart.
 
