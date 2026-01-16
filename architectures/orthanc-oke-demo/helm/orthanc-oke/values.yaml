@@ -1,0 +1,36 @@
+replicaCount: 1
+
+image:
+  repository: orthancteam/orthanc
+  tag: latest
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+# - name: my-regcred
+
+service:
+  type: LoadBalancer
+  httpPort: 80
+  dicomPort: 4242
+  targetHttpPort: 8042
+  targetDicomPort: 4242
+  annotations:
+    oci.oraclecloud.com/load-balancer-type: "lb"
+
+# Secret that already exists in the cluster and contains orthanc.json
+orthancConfigSecret:
+  name: orthanc-json
+  key: orthanc.json
+  mountPath: /etc/orthanc/orthanc.json
+
+# IMPORTANT for orthancteam/orthanc:
+# The Docker entrypoint expects a SINGLE parameter: a path containing configuration file(s),
+# typically the directory /etc/orthanc/
+command: []
+args:
+  - /etc/orthanc/
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
