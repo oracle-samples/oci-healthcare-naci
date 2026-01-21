@@ -1,0 +1,6 @@
+apiVersion: v2
+name: orthanc-oke
+description: Orthanc deployment for OKE with public OCI Load Balancer and orthanc.json from Kubernetes Secret
+type: application
+version: 0.1.3
+appVersion: "1.0"
