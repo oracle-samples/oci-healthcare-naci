@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "orthanc-oke.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "orthanc-oke.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "orthanc-oke.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "orthanc-oke.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      containers:
+        - name: orthanc
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          {{- if .Values.command }}
+          command:
+{{ toYaml .Values.command | indent 12 }}
+          {{- end }}
+
+          {{- if .Values.args }}
+          args:
+{{ toYaml .Values.args | indent 12 }}
+          {{- end }}
+
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetHttpPort }}
+              protocol: TCP
+            - name: dicom
+              containerPort: {{ .Values.service.targetDicomPort }}
+              protocol: TCP
+
+          volumeMounts:
+            - name: orthanc-config
+              mountPath: {{ .Values.orthancConfigSecret.mountPath }}
+              subPath: {{ .Values.orthancConfigSecret.key }}
+              readOnly: true
+
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+
+      volumes:
+        - name: orthanc-config
+          secret:
+            secretName: {{ .Values.orthancConfigSecret.name }}
+            items:
+              - key: {{ .Values.orthancConfigSecret.key }}
+                path: {{ .Values.orthancConfigSecret.key }}
