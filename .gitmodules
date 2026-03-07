@@ -1,0 +1,3 @@
+[submodule "architectures/nextflow-on-oci"]
+	path = architectures/nextflow-on-oci
+	url = https://github.com/dkhopade/nextflow-on-oci
