@@ -22,7 +22,7 @@ Data Management: Includes best practices and examples for staging data to and fr
 
 ![Screenshot of project](images/nextflow-oci.png)
 
-### Built With And Supported By
+### Built with and supported by
 
 * [Nextflow](https://www.nextflow.io/)
 * [Ansible Playbooks](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html)
