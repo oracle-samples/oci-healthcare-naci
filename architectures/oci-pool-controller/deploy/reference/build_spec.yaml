@@ -1,0 +1,21 @@
+version: 0.1
+component: build
+timeoutInSeconds: 1800
+shell: bash
+failImmediatelyOnError: true
+env:
+  exportedVariables:
+    - CONTROLLER_IMAGE_TAG
+steps:
+  - type: Command
+    name: Verify source and build native x86 image
+    timeoutInSeconds: 1500
+    command: |
+      set -euo pipefail
+      cd "${OCI_PRIMARY_SOURCE_DIR}"
+      export CONTROLLER_IMAGE_TAG="build-${OCI_BUILD_RUN_ID##*.}"
+      python3 native_build.py
+outputArtifacts:
+  - name: controller-image
+    type: DOCKER_IMAGE
+    location: pool-controller:build

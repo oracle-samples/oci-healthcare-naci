@@ -1,0 +1,232 @@
+{
+  "files": [
+    {
+      "bytes": 189,
+      "path": ".gitignore",
+      "sha256": "6adde9575331cfaf5e3fd6e65adc42a948a31e161393ce14f31ac4ca9faaabd9"
+    },
+    {
+      "bytes": 1328,
+      "path": "deploy/reference/.terraform.lock.hcl",
+      "sha256": "c64b506bb10b98cd574e7f7234bff532191ab68a1682cd24daa8b98c216b88d1"
+    },
+    {
+      "bytes": 16826,
+      "path": "deploy/reference/main.tf",
+      "sha256": "c7035a782b8b3370749be4b91a87f4628cfd060c084f05206ee474d3007305b9"
+    },
+    {
+      "bytes": 2969,
+      "path": "deploy/reference/outputs.tf",
+      "sha256": "920f77dd251282e7d5c526d15914b368dd112172db4c2ba842c031374aaaa747"
+    },
+    {
+      "bytes": 36665,
+      "path": "deploy/reference/README.md",
+      "sha256": "48e137dd1361765754c5eb2c7b37e9f29ebc86129616f48dfdb1ea34bdceb681"
+    },
+    {
+      "path": "deploy/reference/schema.yaml",
+      "bytes": 11690,
+      "sha256": "c1cc429769077fb889d377f0f50503ea7e8a627d22d46964e894e51a6d5144b6"
+    },
+    {
+      "bytes": 4203,
+      "path": "deploy/reference/terraform.tfvars.example",
+      "sha256": "4f376ae7b283456adbdd1b4995ec44b1eac7640e6dd44f748862dda59d817d7c"
+    },
+    {
+      "bytes": 13287,
+      "path": "deploy/reference/variables.tf",
+      "sha256": "c5a0e483976589911bb8375dbdce6d34669a07ff30ee55d44596b82f2cfc67a6"
+    },
+    {
+      "bytes": 949,
+      "path": "deploy/reference/versions.tf",
+      "sha256": "29a20a45588bfbc57e0138d7222059bae1111c21711b8d3414db1366f0503fb7"
+    },
+    {
+      "bytes": 2225,
+      "path": "DISCLAIMER.md",
+      "sha256": "8606ef4dd0b936932168cb4dcd7c40164341dbf88f8851a8a8d8ac082f246998"
+    },
+    {
+      "bytes": 11291,
+      "path": "docs/implementation-notes.md",
+      "sha256": "cf0d479beb49973d59cf650b10412af63083a2d01b98a5423f4aa1e4fbd98f3f"
+    },
+    {
+      "bytes": 21627,
+      "path": "docs/RUNBOOK.md",
+      "sha256": "3c7438aefd0cb2d07edb76ff196b95591c9dbc73c8e4de4f4d26a7b1f4ebacd6"
+    },
+    {
+      "bytes": 15786,
+      "path": "examples/pool_controller.py",
+      "sha256": "a1d21e957a85387e05225642d19db7681ffd6a2a5fad704dd3e59a49f6f6261a"
+    },
+    {
+      "bytes": 7472,
+      "path": "examples/README.md",
+      "sha256": "4e9b5d88ae3d9885c00e71b245d214bfbaf337073537ce907d177396886d19a6"
+    },
+    {
+      "bytes": 13,
+      "path": "examples/requirements.txt",
+      "sha256": "085e17364081b02c8d4c55127a1c3e045ae29f34ecadbabff9743b4aca160597"
+    },
+    {
+      "bytes": 666,
+      "path": "function/Dockerfile",
+      "sha256": "ea68ddf0cb744ee92ebada5a981c6a1a3f083cfd815e13d89b19bba4dcc56ed1"
+    },
+    {
+      "bytes": 194385,
+      "path": "function/func.py",
+      "sha256": "0185bd7701f0afff5659644f5233008ecef36f4c710dc5c3d9dfe25a775ec9b7"
+    },
+    {
+      "bytes": 26,
+      "path": "function/requirements.txt",
+      "sha256": "8f323d8249728a9cc3ee5fdc8e1e88530bb89704be7b93990ac4e438e8916133"
+    },
+    {
+      "bytes": 1286,
+      "path": "NOTICE.md",
+      "sha256": "439c812bdf733fefe258b5c878ba62649ee85a924c61911da59848418e4e648a"
+    },
+    {
+      "bytes": 19392,
+      "path": "PRODUCT_ARCHITECTURE.md",
+      "sha256": "177559f37a1a578917c5aa9caa0fec9e671513940263cf0febf68733ebb2780c"
+    },
+    {
+      "bytes": 24577,
+      "path": "README.md",
+      "sha256": "8adc6a50e9da0f2382423656800ef29aa5364eac1debb8a85e0bb7d8e9109b7e"
+    },
+    {
+      "bytes": 2889,
+      "path": "RELEASE_CHECKLIST.md",
+      "sha256": "1f6dda9b67a830011287f2f5bea5ed87404ac6894611e73346fefd27e0ba066d"
+    },
+    {
+      "path": "scripts/build-publish-function-image.py",
+      "bytes": 3842,
+      "sha256": "b418b76baa2e91cc67802a2a3bdd973d7d9cbaf88a7295b3e98807d58dd6310d"
+    },
+    {
+      "path": "scripts/package-reference.py",
+      "bytes": 8861,
+      "sha256": "8e67edfc2fa294f89e12c13a2d3ef732373e8f2b58ea6e9d735d907754d2df97"
+    },
+    {
+      "path": "deploy/reference/image.tf",
+      "bytes": 5149,
+      "sha256": "445fa11c956b7ca7e73254b2d79d35ecc97c83f9376bae8c8cd21f98fe7e584e"
+    },
+    {
+      "path": "deploy/reference/build_function_image.py",
+      "bytes": 9915,
+      "sha256": "3bf1e2ab1ccbc8b11f7ec6022014bae8c52d9fd1ce0fa0b68c0045b04f407dd9"
+    },
+    {
+      "path": "tests/test_resource_manager_image_build.py",
+      "bytes": 16839,
+      "sha256": "b2fa705ac6443c17d1ad99c11e447003a3fcb4fa41a2fa71a1b54aa680cfa431"
+    },
+    {
+      "path": "tests/test_resource_manager_deployment.py",
+      "bytes": 20997,
+      "sha256": "c54ddeb455dde428128fa2cf0ce7a45867b93648fd95642ee274dc368fb82d0e"
+    },
+    {
+      "path": "deploy/reference/enrollment.tf",
+      "bytes": 1405,
+      "sha256": "47842d5ddb88ebbe6a738d895b2f8b5aa8cfbbc5f0e5fb9ed47dc478efe5bebb"
+    },
+    {
+      "path": "deploy/reference/modules/enrollment/main.tf",
+      "bytes": 8871,
+      "sha256": "7346888f26bc4e5746c6648236a1e5129f2f8bd55eb57d7100184bde84a2059e"
+    },
+    {
+      "path": "tests/test_pool_enrollment.py",
+      "bytes": 20579,
+      "sha256": "d6c7a7d4db47fa797d122a371416f2c285cff05e2e065e8db6107781d501d65c"
+    },
+    {
+      "path": "tests/test_empty_enrollment.py",
+      "bytes": 12157,
+      "sha256": "03e75daec35daa22e34a788012aa7d7cc66c0f8cb383466350734586431746ba"
+    },
+    {
+      "path": "tests/test_caller_groups.py",
+      "bytes": 6702,
+      "sha256": "315235bf0f73c8c2acecfe8185336ab98e274894107e08495c00e86996d5f5ac"
+    },
+    {
+      "path": "docs/BOUNDED_GROWTH_ACCEPTANCE.md",
+      "bytes": 13110,
+      "sha256": "d5fc734c6e651ada67d5e5bce503268ef62ca1689c1dd957d3c2bb1934063741"
+    },
+    {
+      "path": "tests/controller_fakes.py",
+      "bytes": 21026,
+      "sha256": "95b290bd115e576152cd0eaf2d58e6658844e35ca4cb3a68e492a731c7f97528"
+    },
+    {
+      "path": "tests/test_controller_acceptance.py",
+      "bytes": 47032,
+      "sha256": "0aadc44ff9d416e08ab150d97ece6069f7c6fcf5e16d0732543ebfa7fd346d77"
+    },
+    {
+      "path": "docs/LIVE_ACCEPTANCE_20260917.md",
+      "bytes": 15529,
+      "sha256": "72d79c05920e5b67a01fab0528cf20f4641b89c0bb573bb8b9bd4dd4cd258a13"
+    },
+    {
+      "path": "docs/SCALING_STATE_ACCEPTANCE_20260917.md",
+      "bytes": 11002,
+      "sha256": "d5961335c14d0b97e7250277f6c499a796f115b114c8a48b109553b6d969ca09"
+    },
+    {
+      "path": "docs/GETTING-STARTED.md",
+      "bytes": 25082,
+      "sha256": "cdf3a961c23163920f63d5e53d945104db0ce493cf74cb024b583b761b0269c3"
+    },
+    {
+      "path": "deploy/reference/build.tf",
+      "bytes": 8052,
+      "sha256": "da0f1ad6791386ef92f8346a7992e53971f2866898cdd738a401f9f5004ca078"
+    },
+    {
+      "path": "deploy/reference/build_spec.yaml",
+      "bytes": 525,
+      "sha256": "0a9bd435ab4fe12642a0607031ef9101d61f0b9214141e0d546b2d19e4456af3"
+    },
+    {
+      "path": "deploy/reference/native_build.py",
+      "bytes": 4357,
+      "sha256": "299b999aa9a990aeaeb83f653e84b0647258d1ca0460141e3c04127c5636e55e"
+    },
+    {
+      "path": "deploy/reference/publish_build_source.py",
+      "bytes": 5915,
+      "sha256": "50fd7f266a6de811324b7c29fae5b379e8883489de701b7b79024f8995e74910"
+    },
+    {
+      "path": "tests/test_native_build.py",
+      "bytes": 11298,
+      "sha256": "0b77b358bab425ceb79ef21ce82378842c876ccd934af82be2d90dae5587ba86"
+    },
+    {
+      "path": "docs/RESOURCE-MANAGER-BUILD-TEST-20260922.md",
+      "bytes": 12129,
+      "sha256": "2fca65633240532fcd39d142f6e1ee49dec44c75dbc1e1ef0c22ba0888728a59"
+    }
+  ],
+  "release": "0.12.0-rc.6-reference-draft",
+  "review": "File integrity only; licensing, provenance, security and release approvals remain pending. See RELEASE_CHECKLIST.md.",
+  "status": "not-approved-for-external-distribution"
+}

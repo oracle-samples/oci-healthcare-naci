@@ -1,0 +1,290 @@
+schemaVersion: 1.1.0
+version: "20260916"
+title: OCI Pool Controller Reference Implementation
+description: Unsupported reference implementation for existing OCI instance pools.
+informationalText: >-
+  Apply builds the included source on a native x86 OCI DevOps runner, delivers
+  it to a private OCIR repository and deploys an x86 Function. Supply OCI source
+  publication credentials below. Scoped build IAM is created by default;
+  controller runtime IAM is a separate option. No prebuilt image is required.
+  By default the Function deploys without pools and awaits enrollment.
+  Existing Function networking is required. Enable Enroll existing pools now
+  only when prepared pools exist; review the discovered IDs and limits in Plan.
+  This stack never creates or retags workers. Start with dry-run enabled and
+  termination disabled.
+variableGroups:
+  - title: Existing infrastructure
+    variables: [region, tenancy_ocid, controller_compartment_ocid, network_compartment_ocid, function_vcn_ocid, registry_compartment_ocid, subnet_ids]
+  - title: Function deployment
+    variables: [build_function_image, create_build_iam_resources, ocir_username, ocir_auth_token, function_image, function_image_digest, function_shape]
+  - title: Pool enrollment
+    variables: [enroll_pools, pool_compartment_ocid, scope_id, auto_discover_pools, default_pool_max_size]
+  - title: Advanced manual enrollment
+    visible:
+      and:
+        - ${enroll_pools}
+        - not: ["${auto_discover_pools}"]
+    variables: [pools]
+  - title: Advanced discovery overrides
+    visible:
+      and: ["${enroll_pools}", "${auto_discover_pools}"]
+    variables: [customize_pool_settings, pool_overrides]
+  - title: Safety and capacity
+    variables: [dry_run, enable_termination, enable_bounded_growth, max_total_vms, launch_timeout_seconds, max_profiles, max_pool_size, max_active_pools, max_total_ocpus]
+  - title: IAM and resource naming
+    variables: [create_iam_resources, configure_caller_groups, invoker_group_ocids, name_prefix, dynamic_group_name, ledger_bucket_name]
+variables:
+  region:
+    type: oci:identity:region:name
+    required: true
+    title: Region
+  tenancy_ocid:
+    type: string
+    required: true
+    title: Tenancy OCID
+  controller_compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    title: Controller compartment
+  pool_compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    visible: ${enroll_pools}
+    title: Existing pool compartment
+  network_compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    title: Existing network compartment
+  function_vcn_ocid:
+    type: oci:core:vcn:id
+    required: true
+    title: Existing Function VCN
+    dependsOn:
+      compartmentId: ${network_compartment_ocid}
+  registry_compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    title: OCIR repository compartment
+    description: A private repository is created here automatically. For an existing image, select its repository compartment.
+  subnet_ids:
+    type: list
+    valueType: subnet_item
+    required: true
+    title: Existing Function subnets
+    description: Select existing Function subnets with OCI-service connectivity.
+  subnet_item:
+    type: oci:core:subnet:id
+    visible: false
+    dependsOn:
+      compartmentId: ${network_compartment_ocid}
+      vcnId: ${function_vcn_ocid}
+  build_function_image:
+    type: boolean
+    default: true
+    title: Build and deploy the Function automatically
+    description: Creates a native x86 DevOps build pipeline and private source/OCIR repositories, builds and delivers the image, then deploys the Function. Disable only for an existing image.
+  create_build_iam_resources:
+    type: boolean
+    default: true
+    visible: ${build_function_image}
+    title: Create scoped build IAM in the tenancy home region
+    description: Grants only this pipeline read access to its source, artifact metadata read and repository metadata inspect in the selected compartments, and management of its one OCIR repository (including lifecycle permissions). No Compute or Function deployment access. Disable only if central IAM provides equivalent permissions.
+  ocir_username:
+    type: string
+    required: true
+    visible: ${build_function_image}
+    title: OCI source-publication username
+    description: Include the identity domain (for example Default/user@example.com). The tenancy name is added automatically. This user needs read/update access to the new OCI code repository.
+  ocir_auth_token:
+    type: password
+    required: true
+    visible: ${build_function_image}
+    title: OCI source-publication auth token
+    description: Publishes only the included build inputs to the private OCI code repository. Not stored in Git or sent to the build runner. Image delivery uses scoped IAM. Restrict access to stack variables and state.
+  function_image:
+    type: string
+    required: true
+    visible:
+      not: ["${build_function_image}"]
+    title: Existing OCIR image address including tag
+  function_image_digest:
+    type: string
+    required: false
+    visible:
+      not: ["${build_function_image}"]
+    title: Optional image digest pin (sha256)
+  function_shape:
+    type: enum
+    enum: [GENERIC_ARM, GENERIC_X86]
+    default: GENERIC_ARM
+    visible:
+      not: ["${build_function_image}"]
+    title: Function architecture (must match image)
+  enroll_pools:
+    type: boolean
+    default: false
+    title: Enroll existing pools now
+    description: Leave unchecked to deploy the Function now and enroll later. Existing saved manual allowlists remain active; existing discovery stacks must check this when upgrading. No pool is created automatically.
+  auto_discover_pools:
+    type: boolean
+    default: true
+    visible: ${enroll_pools}
+    title: Discover enrolled pools automatically
+    description: Reads existing HarnessId and ScaleTestProfile tags in the pool compartment during Plan. A saved nonempty manual allowlist remains authoritative; disable discovery to view or enter it.
+  default_pool_max_size:
+    type: number
+    default: 3
+    visible:
+      and: ["${enroll_pools}", "${auto_discover_pools}"]
+    title: Maximum workers per discovered pool
+    description: Approved size limit for every discovered pool unless overridden below.
+  scope_id:
+    type: string
+    required: false
+    default: ""
+    title: Controller group (optional)
+    description: Deploy-only mode generates a stable group when blank; use output controller_scope_id as HarnessId for later pools. Initial discovery can infer a sole existing group. Set a planned group now if known; it cannot change after Apply.
+  pools:
+    type: map
+    valueType: pool_entry
+    required: true
+    title: Existing pool allowlist (keys match ScaleTestProfile)
+    description: Enter the pinned pool OCID, worker type and approved maximum size. A nonempty map takes precedence over automatic discovery; Terraform verifies every pool and its launch configuration at plan time.
+  pool_entry:
+    type: object
+    visible: false
+    attributes: [pool_id, worker_type, max_size]
+  pool_id:
+    type: string
+    actualName: pool_id
+    visible: false
+    required: true
+  worker_type:
+    type: string
+    actualName: worker_type
+    visible: false
+    required: true
+  max_size:
+    type: number
+    actualName: max_size
+    visible: false
+    required: true
+  customize_pool_settings:
+    type: boolean
+    default: false
+    title: Customize per-pool settings
+    description: Show optional overrides for individual discovered profiles. Leave unchecked for a new deployment using defaults. Saved overrides still apply when hidden; remove their entries to restore defaults.
+  pool_overrides:
+    type: map
+    valueType: pool_override_entry
+    required: false
+    default: {}
+    visible: ${customize_pool_settings}
+    title: Optional per-profile overrides
+    description: The key is an existing ScaleTestProfile tag, not the placeholder key1. Add entries only for custom worker types or maximum sizes. Remove unused rows completely; an empty row requires a key.
+  pool_override_entry:
+    type: object
+    visible: false
+    attributes: [pool_override_worker_type, pool_override_max_size]
+  pool_override_worker_type:
+    type: string
+    actualName: worker_type
+    visible: false
+    required: false
+    title: Optional worker type override
+  pool_override_max_size:
+    type: number
+    actualName: max_size
+    visible: false
+    required: false
+    title: Optional maximum size override
+  dry_run:
+    type: boolean
+    default: true
+    title: Dry-run (keep enabled for initial validation)
+  enable_bounded_growth:
+    type: boolean
+    default: false
+    title: Bounded-growth preview (requires staging acceptance)
+    description: Keep disabled for production pending live reburst acceptance. Requires exclusive pool/protection writers and irreversible worker drain. Activation requires migration before disabling or changing enrollment.
+  max_total_vms:
+    type: number
+    default: 25
+    minimum: 1
+    title: Aggregate VM cap (bounded-growth preview)
+    description: Includes pending launches and retiring workers. This is not the OCI daily creation limit.
+  launch_timeout_seconds:
+    type: number
+    default: 900
+    minimum: 1
+    title: Launch observation deadline (seconds)
+    description: Unresolved launches require operator review after this interval; capacity is never automatically refunded.
+  enable_termination:
+    type: boolean
+    default: false
+    title: Enable targeted termination (leave disabled initially)
+  create_iam_resources:
+    type: boolean
+    default: false
+    title: Create reviewed IAM policies and dynamic group
+  configure_caller_groups:
+    type: boolean
+    default: false
+    title: Configure caller groups
+    description: Show optional existing IAM group OCIDs permitted to invoke this Function. Hiding the editor does not disable saved groups; remove their entries to revoke stack-managed grants.
+  invoker_group_ocids:
+    type: list
+    valueType: invoker_group_item
+    required: false
+    default: []
+    visible: ${configure_caller_groups}
+    title: Existing approved invoking group OCIDs
+    description: Optional. Enter existing IAM group OCIDs beginning ocid1.group., not names, users or dynamic groups. Blank rows are ignored. Leave empty to configure caller permissions later; this does not make the Function public.
+  invoker_group_item:
+    type: string
+    visible: false
+  max_profiles:
+    type: number
+    default: 6
+    title: Registry profile ceiling
+  max_pool_size:
+    type: number
+    default: 50
+    title: Per-profile worker ceiling
+  max_active_pools:
+    type: number
+    default: 1
+    title: Simultaneously active pool ceiling
+  max_total_ocpus:
+    type: number
+    default: 16
+    title: Aggregate OCPU ceiling
+  name_prefix:
+    type: string
+    default: oci-pool-controller
+    title: Resource name prefix
+  dynamic_group_name:
+    type: string
+    title: Optional existing IAM dynamic-group name
+  ledger_bucket_name:
+    type: string
+    title: Optional Object Storage ledger-bucket name
+    description: >-
+      This stack creates a dedicated private, versioned ledger bucket. Leave
+      blank to use the generated name; do not provide an existing shared bucket.
+outputs:
+  controller_scope_id:
+    type: string
+    title: Stable controller group (HarnessId for later enrollment)
+  function_image:
+    type: string
+    title: Deployed Function image
+  function_image_digest:
+    type: string
+    title: Deployed image digest
+  function_ocid:
+    type: ocid
+    title: Controller Function
+  invoke_endpoint:
+    type: string
+    title: Signed Functions invoke endpoint

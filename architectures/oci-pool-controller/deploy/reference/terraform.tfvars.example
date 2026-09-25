@@ -1,0 +1,76 @@
+# Copy to a local ignored terraform.tfvars; replace every example value.
+# This file cannot provision a usable environment unchanged.
+region                       = "us-ashburn-1"
+tenancy_ocid                 = "ocid1.tenancy.oc1..REPLACE_ME"
+controller_compartment_ocid  = "ocid1.compartment.oc1..REPLACE_CONTROLLER"
+pool_compartment_ocid        = "" # Optional in standby; explicitly select for enrollment.
+network_compartment_ocid     = "ocid1.compartment.oc1..REPLACE_NETWORK"
+function_vcn_ocid            = "ocid1.vcn.oc1.iad.REPLACE_FUNCTION_VCN"
+registry_compartment_ocid    = "ocid1.compartment.oc1..REPLACE_REGISTRY"
+subnet_ids                  = ["ocid1.subnet.oc1.iad.REPLACE_FUNCTION_SUBNET"]
+build_function_image        = true
+create_build_iam_resources   = true # Home-region grants for this build pipeline only.
+ocir_username               = "Default/REPLACE_USERNAME"
+# Legacy input names: used to publish source to private OCI Git, not to push images.
+# Set sensitive ocir_auth_token in Resource Manager, or TF_VAR_ocir_auth_token
+# for a local Terraform apply. Never commit tokens. No existing image required.
+# To use a prebuilt image instead, disable the build and set:
+# build_function_image  = false
+# function_image        = "iad.ocir.io/REPLACE_NAMESPACE/REPLACE_REPOSITORY:VERSION"
+# function_image_digest = "sha256:REPLACE_WITH_64_LOWERCASE_HEX_CHARACTERS" # optional
+# function_shape        = "GENERIC_ARM" # must match the existing image
+
+dry_run               = true
+enable_termination    = false
+enable_bounded_growth = false # Preview only; see docs/BOUNDED_GROWTH_ACCEPTANCE.md.
+max_total_vms         = 25    # Includes reserved launches and retiring VMs in preview mode.
+launch_timeout_seconds = 900 # Requires review after expiry; never refunds reservations.
+create_iam_resources  = false
+invoker_group_ocids   = [] # Optional; configure approved caller permissions before invoking.
+# The Console's Configure caller groups toggle only shows/hides the editor.
+# CLI users can set real group OCIDs directly, without enabling the toggle:
+# invoker_group_ocids = ["ocid1.group.oc1..REPLACE_APPROVED_CALLER_GROUP"]
+
+# Deploy the Function first without listing/reading pools or requiring pool tags.
+enroll_pools          = false
+# Set a known future HarnessId group before the first Apply, or leave blank for
+# a persisted controller-UUID. Read controller_scope_id after Apply and use that
+# value on later pool/configuration/launch HarnessId tags. Do not change scope.
+# If enrolling on the FIRST deployment instead, blank scope_id can infer the
+# sole existing HarnessId group; set it explicitly if multiple groups exist.
+scope_id             = ""
+# Later: set enroll_pools=true and pool_compartment_ocid to the existing pool
+# compartment, set scope_id to controller_scope_id and prepare matching tags,
+# then review Plan/IAM
+# changes and Apply the same stack. No pool is ever created, resized or retagged.
+# Discovery is active only when enrollment is enabled.
+auto_discover_pools   = true
+default_pool_max_size = 3 # Approved ceiling per pool, not its current/desired size.
+
+# Optional overrides keyed by an existing ScaleTestProfile tag. Without an
+# override, worker_type is the profile key and max_size is the default above.
+# In Resource Manager, check Customize per-pool settings to reveal the rows.
+# This is a display control only: hiding saved overrides does not disable them.
+# pool_overrides = {
+#   small = { max_size = 5, worker_type = "small-worker" }
+# }
+
+# Start with a small existing staging group. Increase only after measurement.
+max_profiles       = 6
+max_pool_size      = 50
+max_active_pools   = 1
+max_total_ocpus    = 16
+
+# Optional advanced manual enrollment. A nonempty pools map takes precedence
+# over standby/discovery, preserving existing stacks. For a new manual stack, set:
+# enroll_pools        = true
+# pool_compartment_ocid = "ocid1.compartment.oc1..REPLACE_POOLS"
+# auto_discover_pools = false
+# Use the persisted controller_scope_id, or set a group's scope_id BEFORE first Apply.
+# pools = {
+#   small = {
+#     pool_id     = "ocid1.instancepool.oc1.iad.REPLACE_POOL"
+#     worker_type = "small-worker"
+#     max_size    = 3
+#   }
+# }
