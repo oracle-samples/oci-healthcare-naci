@@ -10,7 +10,7 @@ validate it for your platform; it is not a production-qualified service.
 > Complete the [release checklist](RELEASE_CHECKLIST.md) before publishing,
 > pushing to an external repository, or distributing source or images.
 
-[![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https%3A%2F%2Fgithub.com%2FPerseus1237%2Foci-pool-controller%2Farchive%2Frefs%2Fheads%2Fmain.zip&workingDirectory=oci-pool-controller-main%2Fdeploy%2Freference)
+[![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https%3A%2F%2Fgithub.com%2Fsrudos%2Foci-healthcare-naci%2Fblob%2Fpool-controller%2Farchitectures%2Foci-pool-controller%2Freleases%2Foci-pool-controller-main.zip&workingDirectory=oci-pool-controller-main%2Fdeploy%2Freference)
 
 **One-click Resource Manager launch:** the button downloads the public `main`
 branch archive and opens the OCI Resource Manager **Create stack** form. The
