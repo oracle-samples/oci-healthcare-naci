@@ -1,15 +1,5 @@
 # OCI Pool Controller POC — Reference Implementation
 
-A sample code reference implementation for integrating a scheduler or control plane with
-OCI instance pools. It demonstrates durable desired-capacity reconciliation,
-per-pool coordination, and explicit retirement of drained workers. Adapt and
-validate it for your platform; it is not a production-qualified service.
-
-> **Public-release draft — not approved for external distribution.**
-> This clean-history source snapshot is prepared for release review only.
-> Complete the [release checklist](RELEASE_CHECKLIST.md) before publishing,
-> pushing to an external repository, or distributing source or images.
-
 [![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-samples/oci-healthcare-naci/raw/main/architectures/oci-pool-controller/releases/oci-pool-controller-main.zip&workingDirectory=oci-pool-controller-main%2Fdeploy%2Freference)
 
 **One-click Resource Manager launch:** the button downloads the public `main`
@@ -38,18 +28,6 @@ button. Opening the button only opens the form; it does not deploy resources.
 rows are ignored; saved real group OCIDs still apply when the editor is hidden.
 An empty group list grants no invocation access. Configure approved caller IAM
 before invoking the Function; see the [IAM guide](deploy/reference/README.md#4-review-configuration-and-iam).
-
-## Sample Code Disclaimer
-
-**Unsupported sample code—not an Oracle-supported product or service.**
-
-**Sample Code Disclaimer**: This script is provided as a sample. Please ensure thorough testing and modify the code as necessary to meet your specific requirements.
-
-You are responsible for security review, testing, adaptation, deployment,
-operation and resulting cloud costs. No support, maintenance, update or
-security-fix commitment is made unless separately agreed in writing. This code
-can permanently terminate instances. Read [DISCLAIMER.md](DISCLAIMER.md) and [NOTICE.md](NOTICE.md) before use or distribution.
-
 
 ## Start here
 
@@ -401,5 +379,3 @@ and unqualified fleet throughput require operator planning. Read the
 [architecture limits](PRODUCT_ARCHITECTURE.md#7-limits-and-failure-boundaries)
 and [production promotion gates](docs/RUNBOOK.md#9-production-promotion-gates).
 
-## POC SAMPLE CODE
-ORACLE AND ITS AFFILIATES DO NOT PROVIDE ANY WARRANTY WHATSOEVER, EXPRESS OR IMPLIED, FOR ANY SOFTWARE, MATERIAL OR CONTENT OF ANY KIND CONTAINED OR PRODUCED WITHIN THIS REPOSITORY, AND IN PARTICULAR SPECIFICALLY DISCLAIM ANY AND ALL IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE. FURTHERMORE, ORACLE AND ITS AFFILIATES DO NOT REPRESENT THAT ANY CUSTOMARY SECURITY REVIEW HAS BEEN PERFORMED WITH RESPECT TO ANY SOFTWARE, MATERIAL OR CONTENT CONTAINED OR PRODUCED WITHIN THIS REPOSITORY. IN ADDITION, AND WITHOUT LIMITING THE FOREGOING, THIRD PARTIES MAY HAVE POSTED SOFTWARE, MATERIAL OR CONTENT TO THIS REPOSITORY WITHOUT ANY REVIEW. USE AT YOUR OWN RISK.
