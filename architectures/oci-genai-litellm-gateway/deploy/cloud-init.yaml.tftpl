@@ -1,0 +1,66 @@
+#cloud-config
+package_update: true
+packages:
+  - docker.io
+  - docker-compose-v2
+  - python3
+  - curl
+write_files:
+%{ for source in application_files ~}
+  - path: /opt/oci-genai-phi/${source.path}
+    owner: root:root
+    permissions: '0644'
+    encoding: b64
+    content: '${source.content}'
+%{ endfor ~}
+  - path: /opt/oci-genai-phi/runtime.env
+    owner: root:root
+    permissions: '0600'
+    encoding: b64
+    content: '${runtime_environment}'
+  - path: /opt/oci-genai-phi/initialize.py
+    owner: root:root
+    permissions: '0700'
+    content: |
+      from pathlib import Path
+      import os
+      import secrets
+
+      root = Path('/opt/oci-genai-phi')
+      destination = root / '.env'
+      if not destination.exists():
+          # Generate on the VM, never in Terraform state or cloud-init metadata.
+          content = (root / 'runtime.env').read_text()
+          # LiteLLM Gateway requires master keys to use the sk- prefix.
+          content += 'GATEWAY_API_KEY=sk-' + secrets.token_urlsafe(48) + '\n'
+          fd = os.open(destination, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+          with os.fdopen(fd, 'w') as output:
+              output.write(content)
+  - path: /etc/systemd/system/oci-genai-phi.service
+    owner: root:root
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=OCI Generative AI LiteLLM and Presidio reference
+      Requires=docker.service
+      After=docker.service network-online.target
+      Wants=network-online.target
+      StartLimitIntervalSec=0
+
+      [Service]
+      Type=oneshot
+      RemainAfterExit=yes
+      WorkingDirectory=/opt/oci-genai-phi
+      ExecStartPre=/usr/bin/python3 /opt/oci-genai-phi/initialize.py
+      ExecStart=/usr/bin/docker compose up --detach --build --wait --wait-timeout 600
+      ExecStop=/usr/bin/docker compose down
+      TimeoutStartSec=0
+      Restart=on-failure
+      RestartSec=30
+
+      [Install]
+      WantedBy=multi-user.target
+runcmd:
+  - [systemctl, enable, --now, docker]
+  - [systemctl, daemon-reload]
+  - [systemctl, enable, --now, oci-genai-phi]

@@ -1,0 +1,10 @@
+tenancy_ocid     = "ocid1.tenancy.oc1..REPLACE"
+compartment_ocid = "ocid1.compartment.oc1..REPLACE"
+region          = "us-ashburn-1"
+ssh_public_key  = "ssh-ed25519 REPLACE_WITH_YOUR_PUBLIC_KEY"
+ssh_allowed_cidr = "203.0.113.10/32" # Replace with your real public IPv4 /32.
+
+# Optional: verify on-demand availability and provider processing locations.
+# basic_model     = "google.gemini-2.5-flash-lite"
+# reasoning_model = "xai.grok-4.3"
+# genai_region    = "us-ashburn-1"

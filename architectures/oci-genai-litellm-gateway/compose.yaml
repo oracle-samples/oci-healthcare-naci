@@ -1,0 +1,61 @@
+name: oci-genai-phi
+services:
+  guardrail:
+    build: ./guardrail
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [guardrail]
+    mem_limit: 3g
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/health', timeout=5)"]
+      interval: 15s
+      timeout: 10s
+      retries: 8
+      start_period: 90s
+    logging:
+      driver: local
+      options: {max-size: 5m, max-file: "2"}
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    restart: unless-stopped
+    init: true
+    ports: ["127.0.0.1:4000:4000"]
+    environment:
+      LITELLM_MASTER_KEY: ${GATEWAY_API_KEY:?Generate a gateway key}
+      OCI_REGION: ${OCI_REGION:?Set OCI GenAI region}
+      OCI_COMPARTMENT_ID: ${OCI_COMPARTMENT_ID:?Set OCI GenAI compartment}
+      BASIC_MODEL: ${BASIC_MODEL:?Set basic LiteLLM OCI model}
+      REASONING_MODEL: ${REASONING_MODEL:?Set reasoning LiteLLM OCI model}
+      DISABLE_ADMIN_UI: "true"
+      LITELLM_TELEMETRY: "False"
+      LITELLM_LOG: CRITICAL
+    depends_on:
+      guardrail: {condition: service_healthy}
+    read_only: true
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+      - /home/app/.cache:size=128m,uid=10001,gid=10001
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [guardrail, outbound]
+    mem_limit: 3g
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:4000/health/liveliness', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    logging:
+      driver: local
+      options: {max-size: 5m, max-file: "2"}
+networks:
+  guardrail:
+    internal: true
+  outbound: {}

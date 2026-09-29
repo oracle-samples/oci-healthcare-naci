@@ -1,0 +1,150 @@
+title: OCI Generative AI Gateway with LiteLLM and Guardrails
+description: A reference architecture for OCI Generative AI model routing, usage controls, and pluggable guardrail services through LiteLLM.
+schemaVersion: "1.1.0"
+version: "1.0.0"
+locale: en
+informationalText: >-
+  Creates a billable AMD VM, boot volume, network, and instance-principal IAM policy
+  for a LiteLLM Gateway Router and Presidio guardrail service. OCI on-demand model
+  inference is billed separately. Review model availability, pricing, hosting location,
+  and data requirements. Use synthetic data for initial evaluation. The API is available
+  through an SSH tunnel.
+
+variableGroups:
+  - title: Deployment location
+    variables:
+      - compartment_ocid
+      - region
+      - display_name
+  - title: SSH access
+    variables:
+      - ssh_public_key
+      - ssh_allowed_cidr
+  - title: OCI Generative AI model routing
+    variables:
+      - genai_compartment_ocid
+      - genai_region
+      - basic_model
+      - reasoning_model
+  - title: Compute options
+    variables:
+      - availability_domain
+      - instance_shape
+      - instance_ocpus
+      - instance_memory_gbs
+      - boot_volume_gbs
+      - image_ocid
+  - title: Internal
+    visible: false
+    variables:
+      - tenancy_ocid
+
+variables:
+  tenancy_ocid:
+    type: string
+    visible: false
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    title: Deployment compartment
+    required: true
+  region:
+    type: oci:identity:region:name
+    title: Deployment region
+    required: true
+  display_name:
+    type: string
+    title: Resource name prefix
+    default: oci-genai-litellm
+    required: true
+    pattern: "^[a-z][a-z0-9-]{2,30}$"
+  ssh_public_key:
+    type: oci:core:ssh:publickey
+    title: SSH public key
+    description: Your OpenSSH public key. Keep the matching private key on your workstation.
+    required: true
+    additionalProps:
+      allowMultiple: false
+  ssh_allowed_cidr:
+    type: string
+    title: Trusted SSH source CIDR
+    description: Your public IPv4 address followed by /32, or a trusted network /24 or narrower. Required; no world-open SSH.
+    required: true
+  genai_compartment_ocid:
+    type: string
+    title: Generative AI compartment OCID (optional)
+    description: Leave blank to use the deployment compartment for inference and billing.
+    default: ""
+  genai_region:
+    type: string
+    title: Generative AI region (optional)
+    description: Leave blank to use the deployment region. For the default pair choose us-ashburn-1, us-chicago-1, or us-phoenix-1; verify current on-demand availability. Other regions require suitable model IDs.
+    default: ""
+  basic_model:
+    type: string
+    title: Basic model
+    description: Bare OCI model ID without oci/. Lower-cost default; verify current availability and price in OCI.
+    default: google.gemini-2.5-flash-lite
+    required: true
+  reasoning_model:
+    type: string
+    title: Reasoning model
+    description: Bare OCI frontier model ID without oci/. Verify current availability and price in OCI.
+    default: xai.grok-4.3
+    required: true
+  availability_domain:
+    type: string
+    title: Availability domain (optional)
+    description: Leave blank to select the region's first AD; enter an exact AD name if capacity is unavailable there.
+    default: ""
+  instance_shape:
+    type: enum
+    title: AMD flexible shape
+    enum:
+      - VM.Standard.E4.Flex
+      - VM.Standard.E5.Flex
+      - VM.Standard.E6.Flex
+    default: VM.Standard.E5.Flex
+    required: true
+  instance_ocpus:
+    type: integer
+    title: OCPUs
+    default: 1
+    minimum: 1
+    maximum: 8
+  instance_memory_gbs:
+    type: integer
+    title: Memory (GB)
+    default: 16
+    minimum: 16
+    maximum: 64
+  boot_volume_gbs:
+    type: integer
+    title: Boot volume (GB)
+    default: 50
+    minimum: 50
+    maximum: 200
+  image_ocid:
+    type: string
+    title: Ubuntu 24.04 AMD64 image OCID (optional)
+    description: Leave blank to discover the newest compatible OCI platform image.
+    default: ""
+
+outputs:
+  ssh_tunnel_command:
+    title: Open an SSH tunnel
+    type: string
+  bootstrap_status_command:
+    title: Check bootstrap
+    type: string
+  api_key_command:
+    title: Retrieve the API key
+    type: string
+  local_api_url:
+    title: API base URL (after opening the tunnel)
+    type: link
+  public_ip:
+    title: SSH public IP
+    type: string
+  instance_id:
+    title: Instance OCID
+    type: string
