@@ -46,7 +46,7 @@ data-governance requirements.
   application source, bootstrap automation, tests, and examples.
 
 <!-- DEPLOY_BUTTON_START -->
-[![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https%3A%2F%2Fgithub.com%2Foracle-samples%2Foci-healthcare-naci%2Freleases%2Fdownload%2Flatest%2Foci-genai-litellm-gateway.zip)
+[![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https%3A%2F%2Fgithub.com%2Foracle-samples%2Foci-healthcare-naci%2Freleases%2Fdownload%2Flatest%2Foci-genai-phi-stack.zip)
 <!-- DEPLOY_BUTTON_END -->
 
 ## Key benefits for organizations
@@ -240,6 +240,10 @@ than hidden dependencies.
    the commands in the Resource Manager **Outputs** tab to check bootstrap,
    retrieve the Gateway key, and open the SSH tunnel.
 
+The bootstrap retries Ubuntu package installation up to eight times for temporary
+DNS or package-repository failures. If every retry is exhausted, use the recovery
+commands in the [deployment guide](docs/deployment.md), then restart the service.
+
 The source ZIP includes Terraform, the setup form, application source, and
 bootstrap configuration. The VM does not need repository access, a container
 registry account, an OCI user signing key, a dedicated GPU cluster, a database,
@@ -339,6 +343,7 @@ The button follows [Oracle's documented `zipUrl` format](https://docs.oracle.com
 
 ## Documentation
 
+- [Build-it-yourself PRD for coding agents](docs/PRD.md)
 - [Reference architecture and extension paths](docs/reference-architecture.md)
 - [LiteLLM intelligent routing and cost controls](docs/litellm-routing-and-cost.md)
 - [OCI deployment and operations](docs/deployment.md)
