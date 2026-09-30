@@ -51,6 +51,7 @@ REQUIRED_FILES = (
 OPTIONAL_FILES = (
     "terraform.tfvars.example",
     "requirements-dev.txt",
+    "docs/PRD.md",
     "docs/deployment.md",
     "docs/litellm-routing-and-cost.md",
     "docs/reference-architecture.md",

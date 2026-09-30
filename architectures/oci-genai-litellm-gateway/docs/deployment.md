@@ -45,6 +45,17 @@ inference beyond application startup; retry the synthetic smoke test after the
 policy takes effect. Oracle documents that dynamic-group membership changes can
 take about an hour to propagate.
 
+The bootstrap retries Ubuntu package metadata and runtime installation up to eight
+times to accommodate short-lived DNS or package-repository failures. If all retries
+are exhausted, wait for network connectivity to recover, then run:
+
+```bash
+sudo apt-get update
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y docker.io docker-compose-v2 python3 curl
+sudo systemctl enable --now docker
+sudo systemctl restart oci-genai-phi
+```
+
 Open the `ssh_tunnel_command` in a terminal, adding `-i /path/to/private/key` if
 necessary. Retrieve the bearer key with `api_key_command`. Follow the README's
 synthetic request examples at `http://127.0.0.1:4000/v1`.

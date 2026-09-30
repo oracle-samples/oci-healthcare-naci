@@ -1,11 +1,26 @@
 #cloud-config
-package_update: true
-packages:
-  - docker.io
-  - docker-compose-v2
-  - python3
-  - curl
 write_files:
+  - path: /opt/oci-genai-phi/install-runtime.sh
+    owner: root:root
+    permissions: '0700'
+    content: |
+      #!/usr/bin/env bash
+      set -Eeuo pipefail
+      export DEBIAN_FRONTEND=noninteractive
+
+      # Package mirrors and the first DNS lookup can be briefly unavailable during
+      # initial VM provisioning. Keep cloud-init alive while that settles.
+      for attempt in {1..8}; do
+        if apt-get update -o Acquire::Retries=3 && \
+           apt-get install -y -o Acquire::Retries=3 docker.io docker-compose-v2 python3 curl; then
+          systemctl enable --now docker
+          exit 0
+        fi
+        sleep "$((attempt * 15))"
+      done
+
+      echo 'Unable to install the OCI GenAI gateway runtime after eight attempts' >&2
+      exit 1
 %{ for source in application_files ~}
   - path: /opt/oci-genai-phi/${source.path}
     owner: root:root
@@ -61,6 +76,6 @@ write_files:
       [Install]
       WantedBy=multi-user.target
 runcmd:
-  - [systemctl, enable, --now, docker]
+  - [bash, /opt/oci-genai-phi/install-runtime.sh]
   - [systemctl, daemon-reload]
   - [systemctl, enable, --now, oci-genai-phi]
