@@ -46,7 +46,7 @@ data-governance requirements.
   application source, bootstrap automation, tests, and examples.
 
 <!-- DEPLOY_BUTTON_START -->
-[![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https%3A%2F%2Fgithub.com%2Foracle-samples%2Foci-healthcare-naci%2Freleases%2Fdownload%2Flatest%2Foci-genai-litellm-gateway.zip)
+[![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https%3A%2F%2Fgithub.com%2Foracle-samples%2Foci-healthcare-naci%2Freleases%2Fdownload%2Flatest%2Foci-genai-phi-stack.zip)
 <!-- DEPLOY_BUTTON_END -->
 
 ## Key benefits for organizations
