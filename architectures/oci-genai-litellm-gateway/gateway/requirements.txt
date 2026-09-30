@@ -1,0 +1,5 @@
+litellm[proxy]==1.103.0
+oci==2.187.1
+# LiteLLM's auth exception classifier imports the Prisma client even when the
+# Gateway runs without a database. Pin it so unauthenticated calls fail as 401.
+prisma==0.15.0

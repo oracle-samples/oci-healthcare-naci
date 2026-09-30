@@ -1,0 +1,86 @@
+model_list:
+  - model_name: basic
+    litellm_params:
+      model: os.environ/BASIC_MODEL
+      oci_region: os.environ/OCI_REGION
+      oci_compartment_id: os.environ/OCI_COMPARTMENT_ID
+      oci_serving_mode: ON_DEMAND
+      max_tokens: 512
+      max_parallel_requests: 4
+  - model_name: reasoning
+    litellm_params:
+      model: os.environ/REASONING_MODEL
+      oci_region: os.environ/OCI_REGION
+      oci_compartment_id: os.environ/OCI_COMPARTMENT_ID
+      oci_serving_mode: ON_DEMAND
+      max_tokens: 4096
+      max_parallel_requests: 4
+
+# LiteLLM runs this guardrail before an OCI request and again on the model
+# response. A Presidio outage therefore stops the request instead of silently
+# passing uninspected text.
+guardrails:
+  - guardrail_name: presidio-phi
+    litellm_params:
+      guardrail: presidio
+      mode: pre_call
+      default_on: true
+      presidio_filter_scope: both
+      output_parse_pii: false
+      presidio_language: en
+      presidio_analyzer_api_base: http://guardrail:8001
+      presidio_anonymizer_api_base: http://guardrail:8001
+      presidio_analyze_chunk_size_bytes: 50000
+      presidio_score_thresholds:
+        ALL: 0.4
+      pii_entities_config:
+        PERSON: MASK
+        PHONE_NUMBER: MASK
+        EMAIL_ADDRESS: MASK
+        US_SSN: MASK
+        DATE_TIME: MASK
+        LOCATION: MASK
+        US_DRIVER_LICENSE: MASK
+        US_PASSPORT: MASK
+        US_BANK_NUMBER: MASK
+        CREDIT_CARD: MASK
+        IP_ADDRESS: MASK
+        MEDICAL_LICENSE: MASK
+        URL: MASK
+        MRN: MASK
+        PATIENT_ID: MASK
+        ACCOUNT_ID: MASK
+        DATE_OF_BIRTH: MASK
+
+# Both public aliases are real LiteLLM Router model groups. Add another entry
+# with the same model_name to enable load balancing or fallback within a tier.
+router_settings:
+  routing_strategy: simple-shuffle
+  enable_pre_call_checks: true
+  default_max_parallel_requests: 4
+  num_retries: 0
+  timeout: 120
+  cache_responses: false
+
+litellm_settings:
+  callbacks:
+    - gateway.oci_auth.oci_instance_principal
+  telemetry: false
+  set_verbose: false
+  turn_off_message_logging: true
+  log_raw_request_response: false
+  redact_messages_in_exceptions: true
+  expose_router_debug_in_errors: false
+  suppress_debug_info: true
+  request_timeout: 120
+  num_retries: 0
+  drop_params: true
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
+  max_in_flight_requests_per_worker: 4
+  max_queued_requests_per_worker: 0
+  admission_queue_timeout_seconds: 1
+  disable_spend_logs: true
+  disable_error_logs: true
+  disable_master_key_return: true

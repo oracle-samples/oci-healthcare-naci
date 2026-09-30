@@ -1,0 +1,10 @@
+# Unit tests import the LiteLLM callback API but do not run the Proxy in this
+# shared environment. The Gateway and Presidio images intentionally install in
+# separate containers because their current cryptography ranges do not overlap.
+litellm==1.103.0
+oci==2.187.1
+-r guardrail/requirements.txt
+pytest==9.1.1
+pytest-asyncio==1.4.0
+PyYAML==6.0.3
+python-hcl2==8.1.4
