@@ -1,5 +1,10 @@
 # Deploying the OCI Generative AI gateway reference architecture
 
+For a complete customer-to-Codex handoff, use
+[How to deploy this gateway into your OCI tenancy with Codex](customer-tenancy-deployment.md).
+It covers customer prerequisites, scoped operator access, executable deployment
+steps, acceptance checks, and resuming interrupted work.
+
 The stack demonstrates a shared OCI model-access layer: LiteLLM provides the
 OpenAI-compatible Gateway and Gateway Router, OCI Generative AI runs the selected
 models, and Presidio demonstrates a pluggable request-and-response guardrail.
