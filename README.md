@@ -18,6 +18,7 @@ This repository provides ready-to-use reference architectures, automation, and s
 
 ## Reference Architectures
 
+* OCI Generative AI Gateway with LiteLLM: [architecture](./architectures/oci-genai-litellm-gateway) and [customer deployment with Codex](./architectures/oci-genai-litellm-gateway/docs/customer-tenancy-deployment.md)
 * Mirth Connect on OCI VMs: [architectures/mirth-demo](./architectures/mirth-demo)
 * Orthanic Demo on OCI: [architectures/orthanc-demo](./architectures/orthanc-demo)
 
