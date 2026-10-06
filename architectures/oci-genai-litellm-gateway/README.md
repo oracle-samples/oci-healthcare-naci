@@ -227,6 +227,11 @@ than hidden dependencies.
 
 ## Deploy to OCI
 
+For an agent-executable deployment into your own tenancy, start with
+[Deploy with Codex: customer prerequisites, secure access, and verification](docs/customer-tenancy-deployment.md).
+It includes a copyable handoff prompt, OCI CLI/Terraform authentication, IAM
+options, deployment commands, recovery, and cleanup.
+
 1. Use an OCI tenancy where the operator can create Compute and networking in a
    compartment and create a dynamic group and policy in the tenancy. Confirm
    that the selected models are available for on-demand inference.
@@ -343,6 +348,7 @@ The button follows [Oracle's documented `zipUrl` format](https://docs.oracle.com
 
 ## Documentation
 
+- [Deploy into your OCI tenancy with Codex](docs/customer-tenancy-deployment.md)
 - [Build-it-yourself PRD for coding agents](docs/PRD.md)
 - [Reference architecture and extension paths](docs/reference-architecture.md)
 - [LiteLLM intelligent routing and cost controls](docs/litellm-routing-and-cost.md)
