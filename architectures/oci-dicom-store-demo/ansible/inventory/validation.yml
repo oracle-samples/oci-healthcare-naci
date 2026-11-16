@@ -1,0 +1,7 @@
+---
+all:
+  children:
+    bastion:
+      hosts:
+        validation-only:
+          ansible_connection: local
